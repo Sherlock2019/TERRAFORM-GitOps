@@ -34,13 +34,11 @@ Education and Certifications
 *******************************************************************
 
 
-# TERRAFORM-GitOps
-a crypto exchange infra manged by IAC terraform and using GitOps cicd
-
-###  POC  to use Terraform or IAC tools to provision  a crypto exchange cloud infrastructure.####
+#  Deploement template  for a Crypto Exchange infra  with IAC TERRAFORM-GitOps with  Data ETL and Machine learning -- Monitoring Quicksight 
 
 
-what are the main components ? 
+
+what are the main components of a Crypto exchange ? 
 
 1. Compute Resources:
 Virtual Machines/Instances: For hosting the exchange platform, order matching engines, and other services.
@@ -102,13 +100,14 @@ KYC/AML Verification Services: For user verification and compliance
 
 
 10. Data engineering and Machine learning
-
  
 using  Kinesis Data stream -- SQL load balancing and Queueing - ETL glue -- Athena for SQL --- ML sagemaker --- Datawarehouse --- Dasboard quicksight 
 
 
 
-2. Terraform Configuration Model :
+
+
+2. Terraform Configuration Structure :
 
 
 Modules: Create Terraform modules for each component of the infrastructure.
@@ -142,6 +141,84 @@ structure
         ├── main.tf
         ├── variables.tf
         └── outputs.tf
+
+
+3. Configure a GitOps pipeline using tools like GitLab CI/CD or GitHub Actions.
+
+
+
+Workflow
+
+Development: Developers make changes to Terraform files and push to feature branches.
+Review: Open a merge request for the changes. This triggers the validate and plan stages.
+Approval: Review the plan in the merge request. If everything looks good, approve the merge request.
+Deployment: Once merged into the main branch, the apply stage is manually triggered to update the infrastructure.
+
+
+Pipeline Stages: Define stages for linting, Terraform plan, and apply. 
+Ensure manual approval is required for deploying to production.
+
+Merge Request (MR) Workflow: Use MRs for all changes to the Terraform code to enable code review and auditing.
+
+
+
+
+
+3-  the  Deployment of  Terraform  repo suing GitLab CI/CD Pipeline
+
+Configuration
+The .gitlab-ci.yml file defines the CI/CD pipeline. Here's an example setup:
+
+This configuration includes three stages:
+
+Validate: Checks the Terraform files for any syntax errors.
+
+
+Plan: Runs terraform plan and saves the plan as an artifact. This step is critical for reviewing what Terraform will change before it's applied.
+
+Apply: Applies the Terraform plan. It's set to manual to require explicit approval before changes are made to the infrastructure.
+
+
+```
+# .gitlab-ci.yml
+
+stages:
+  - validate
+  - plan
+  - apply
+
+before_script:
+  - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+  - terraform init
+
+validate:
+  stage: validate
+  script:
+    - terraform validate
+  only:
+    - merge_requests
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - tfplan
+  only:
+    - merge_requests
+
+apply:
+  stage: apply
+  script:
+    - terraform apply -auto-approve tfplan
+  when: manual
+  only:
+    - main
+
+```
+
 
 
 
