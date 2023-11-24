@@ -34,8 +34,9 @@ Education and Certifications
 *******************************************************************
 
 
-#  Deploement template  for a Crypto Exchange infra  with IAC TERRAFORM-GitOps with  Data ETL and Machine learning -- Monitoring Quicksight 
-
+#   this is a Deployment Process and template  for a Crypto Exchange infra  with IAC TERRAFORM-GitOps with  Data ETL and Machine learning -- Monitoring Quicksight 
+#  Goal : to show the top down thinking process of the WHy before the What tool we use and the HOW 
+# this not a ready to use configuration , you need to customize your own needs 
 
 
 what are the main components of a Crypto exchange ? 
