@@ -1,0 +1,48 @@
+#- GitLab CI/CD Pipeline Configuration
+# This configuration includes three stages:
+# Validate: Checks the Terraform files for any syntax errors.
+# Plan: Runs terraform plan and saves the plan as an artifact. This step is critical for reviewing what Terraform will change before it's applied.
+# Apply: Applies the Terraform plan. It's set to manual to require explicit approval before changes are made to the infrastructure.
+
+
+
+# .gitlab-ci.yml
+
+stages:
+  - validate
+  - plan
+  - apply
+
+before_script:
+  - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+  - terraform init
+
+validate:
+  stage: validate
+  script:
+    - terraform validate
+  only:
+    - merge_requests
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - tfplan
+  only:
+    - merge_requests
+
+apply:
+  stage: apply
+  script:
+    - terraform apply -auto-approve tfplan
+  when: manual
+  only:
+    - main
+
+
+
+
