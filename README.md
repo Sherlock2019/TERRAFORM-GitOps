@@ -34,7 +34,8 @@ Education and Certifications
 *******************************************************************
 
 
-#   this is a Deployment Process and template  for a Crypto Exchange infra  with IAC TERRAFORM-GitOps with  Data ETL and Machine learning -- Monitoring Quicksight 
+#    Deployment Process and template  for a Crypto Exchange infra (  with  securisation , key  and secrets management  Data ETL and Machine learning -- Monitoring Quicksight  ) on AWS  using  infra as code TERRAFORM , and GitOps  CICD for automated AWS infra management .
+
 #  Goal : to show the top down thinking process of the WHy before the What tool we use and the HOW 
 # this not a ready to use configuration , you need to customize your own needs 
 
